@@ -11,10 +11,13 @@ import {
   InputType,
   Field,
   Subscription,
+  Publisher,
+  PubSub,
 } from 'type-graphql';
 import { Post } from './post.types';
 import { User } from './user.types';
 import { Context } from './context';
+import { pubsub } from './pubsub';
 
 @InputType()
 export class PostCreateInput {
@@ -35,6 +38,8 @@ export enum SortOrder {
   asc = 'asc',
   desc = 'desc',
 }
+
+const ON_FEED_UPDATED = 'ON_FEED_UPDATED';
 
 @Resolver(Post)
 export class PostResolver {
@@ -75,7 +80,6 @@ export class PostResolver {
 
     return ctx.prisma.post.findMany({
       where: {
-        published: true,
         ...or,
       },
       take: take || undefined,
@@ -84,26 +88,24 @@ export class PostResolver {
     })
   }
 
-  @Subscription(returns => [Post], {
-    subscribe: (_, args, context) => {
-      return context.prisma.$subscribe.posts({ mutation_in: [args.mutationType] });
-    },
+  @Subscription(returns => Post, {
+    topics: ON_FEED_UPDATED,
   })
   async onFeedUpdated(
+    @Root() postPayload: Post,
     @Ctx() ctx: Context,
   ) {
-    console.log('Feed updated');
-    return ctx.prisma.post.findMany({})
+    return postPayload;
   }
 
   @Mutation((returns) => Post)
   async createDraft(
     @Arg('data') data: PostCreateInput,
     @Arg('authorEmail') authorEmail: string,
-
+    @PubSub(ON_FEED_UPDATED) publish: Publisher<Post>,
     @Ctx() ctx: Context,
   ) {
-    return ctx.prisma.post.create({
+    const result = await ctx.prisma.post.create({
       data: {
         title: data.title,
         content: data.content,
@@ -111,7 +113,11 @@ export class PostResolver {
           connect: { email: authorEmail },
         },
       },
-    })
+    });
+
+    publish(result);
+
+    return result;
   }
 
   @Mutation((returns) => Post, { nullable: true })

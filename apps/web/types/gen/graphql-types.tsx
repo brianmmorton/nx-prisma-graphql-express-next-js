@@ -105,7 +105,7 @@ export enum SortOrder {
 
 export type Subscription = {
   __typename?: 'Subscription';
-  onFeedUpdated: Array<Post>;
+  onFeedUpdated: Post;
 };
 
 export type User = {
@@ -127,12 +127,68 @@ export type UserUniqueInput = {
   id?: InputMaybe<Scalars['Float']>;
 };
 
+export type AllFeedQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AllFeedQuery = { __typename?: 'Query', feed: Array<{ __typename?: 'Post', content?: string | null, createdAt: any, id: string, published?: boolean | null, title: string, author?: { __typename?: 'User', id: string, email: string } | null }> };
+
 export type FeedSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type FeedSubscription = { __typename?: 'Subscription', onFeedUpdated: Array<{ __typename?: 'Post', content?: string | null, createdAt: any, id: string, published?: boolean | null, title: string, author?: { __typename?: 'User', id: string, email: string } | null }> };
+export type FeedSubscription = { __typename?: 'Subscription', onFeedUpdated: { __typename?: 'Post', content?: string | null, createdAt: any, id: string, published?: boolean | null, title: string, author?: { __typename?: 'User', id: string, email: string } | null } };
+
+export type CreateDraftMutationVariables = Exact<{
+  title: Scalars['String'];
+  content: Scalars['String'];
+  authorEmail: Scalars['String'];
+}>;
 
 
+export type CreateDraftMutation = { __typename?: 'Mutation', createDraft: { __typename?: 'Post', id: string } };
+
+
+export const AllFeedDocument = gql`
+    query AllFeed {
+  feed {
+    author {
+      id
+      email
+    }
+    content
+    createdAt
+    id
+    published
+    title
+  }
+}
+    `;
+
+/**
+ * __useAllFeedQuery__
+ *
+ * To run a query within a React component, call `useAllFeedQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllFeedQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAllFeedQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAllFeedQuery(baseOptions?: Apollo.QueryHookOptions<AllFeedQuery, AllFeedQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AllFeedQuery, AllFeedQueryVariables>(AllFeedDocument, options);
+      }
+export function useAllFeedLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllFeedQuery, AllFeedQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AllFeedQuery, AllFeedQueryVariables>(AllFeedDocument, options);
+        }
+export type AllFeedQueryHookResult = ReturnType<typeof useAllFeedQuery>;
+export type AllFeedLazyQueryHookResult = ReturnType<typeof useAllFeedLazyQuery>;
+export type AllFeedQueryResult = Apollo.QueryResult<AllFeedQuery, AllFeedQueryVariables>;
 export const FeedDocument = gql`
     subscription Feed {
   onFeedUpdated {
@@ -170,3 +226,38 @@ export function useFeedSubscription(baseOptions?: Apollo.SubscriptionHookOptions
       }
 export type FeedSubscriptionHookResult = ReturnType<typeof useFeedSubscription>;
 export type FeedSubscriptionResult = Apollo.SubscriptionResult<FeedSubscription>;
+export const CreateDraftDocument = gql`
+    mutation CreateDraft($title: String!, $content: String!, $authorEmail: String!) {
+  createDraft(data: {title: $title, content: $content}, authorEmail: $authorEmail) {
+    id
+  }
+}
+    `;
+export type CreateDraftMutationFn = Apollo.MutationFunction<CreateDraftMutation, CreateDraftMutationVariables>;
+
+/**
+ * __useCreateDraftMutation__
+ *
+ * To run a mutation, you first call `useCreateDraftMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateDraftMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createDraftMutation, { data, loading, error }] = useCreateDraftMutation({
+ *   variables: {
+ *      title: // value for 'title'
+ *      content: // value for 'content'
+ *      authorEmail: // value for 'authorEmail'
+ *   },
+ * });
+ */
+export function useCreateDraftMutation(baseOptions?: Apollo.MutationHookOptions<CreateDraftMutation, CreateDraftMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateDraftMutation, CreateDraftMutationVariables>(CreateDraftDocument, options);
+      }
+export type CreateDraftMutationHookResult = ReturnType<typeof useCreateDraftMutation>;
+export type CreateDraftMutationResult = Apollo.MutationResult<CreateDraftMutation>;
+export type CreateDraftMutationOptions = Apollo.BaseMutationOptions<CreateDraftMutation, CreateDraftMutationVariables>;

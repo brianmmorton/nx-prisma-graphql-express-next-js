@@ -64,7 +64,7 @@ const createApp = async () => {
 
   httpServer.listen(4000, () => {
     console.log(`🚀 Server ready at http://localhost:4000/graphql`)
-    console.log(`⏰ Subscriptions ready at http://localhost:4000/graphql`)
+    console.log(`⏰ Subscriptions ready at ws://localhost:4000/graphql`)
   });
 }
 
