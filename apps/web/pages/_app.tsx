@@ -1,59 +1,34 @@
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import { InMemoryCache, ApolloClient, ApolloProvider } from '@apollo/client';
+import { useState } from 'react';
 import './styles.css';
-
-import { split, HttpLink } from '@apollo/client';
-import { getMainDefinition } from '@apollo/client/utilities';
-import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
-import { createClient } from 'graphql-ws';
-import { WebSocket } from 'ws';
 import 'antd/dist/reset.css';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { DehydratedState, Hydrate, QueryClientProvider, QueryClient } from '@tanstack/react-query';
 
-const httpLink = new HttpLink({
-  uri: 'http://localhost:4000/graphql'
-});
+type ReactQueryProps = {
+  pageProps: {
+    dehydratedState: DehydratedState;
+  };
+};
 
-const wsLink = new GraphQLWsLink(createClient({
-  url: 'ws://localhost:4000/graphql',
-  webSocketImpl: WebSocket,
-}));
+function CustomApp({ Component, pageProps }: AppProps & ReactQueryProps) {
+  const [queryClient] = useState(() => new QueryClient());
 
-// The split function takes three parameters:
-//
-// * A function that's called for each operation to execute
-// * The Link to use for an operation if the function returns a "truthy" value
-// * The Link to use for an operation if the function returns a "falsy" value
-const splitLink = split(
-  ({ query }) => {
-    const definition = getMainDefinition(query);
-    return (
-      definition.kind === 'OperationDefinition' &&
-      definition.operation === 'subscription'
-    );
-  },
-  wsLink,
-  httpLink,
-);
-
-export const client = new ApolloClient({
-  link: splitLink,
-  uri: 'http://localhost:4000/graphql',
-  cache: new InMemoryCache(),
-});
-
-
-function CustomApp({ Component, pageProps }: AppProps) {
   return (
-    <ApolloProvider client={client}>
+    <>
       <Head>
         <title>Welcome to web!</title>
       </Head>
       <main className="app">
-        <Component {...pageProps} />
+        <QueryClientProvider client={queryClient}>
+          <Hydrate state={pageProps.dehydratedState}>
+            <Component {...pageProps} />
+            <ReactQueryDevtools initialIsOpen={false} />
+          </Hydrate>
+        </QueryClientProvider>
       </main>
-    </ApolloProvider>
-    
+    </>
   );
 }
 

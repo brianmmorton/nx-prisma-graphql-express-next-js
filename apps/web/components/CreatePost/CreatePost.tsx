@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Form, Input, Button } from 'antd';
 import type { FormItemProps } from 'antd';
 import gql from 'graphql-tag';
-import { useCreateDraftMutation } from '../types/gen/graphql-types';
+import request from 'graphql-request'
+import { useMutation } from '@tanstack/react-query';
 
 const MyFormItemContext = React.createContext<(string | number)[]>([]);
 
@@ -39,18 +40,23 @@ export const CREATE_DRAFT_MUTATION = gql`
 
 export const CreatePost: React.FC = () => {
   const [form] = Form.useForm();
-  const [createDraft] = useCreateDraftMutation();
-
-  const onFinish = (value: { post: { title: string; content: string; } }) => {
-    createDraft({
-      variables: {
-        title: value.post.title,
-        content: value.post.content,
-        authorEmail: 'alice@prisma.io',
+  const { mutate: createDraft } = useMutation(
+    async () => request(
+      'http://localhost:4000/graphql',
+      CREATE_DRAFT_MUTATION,
+      {
+        ...form.getFieldsValue().post,
+        authorEmail: 'alice@prisma.io'
       },
-      onCompleted: () => form.resetFields(),
-    })
-  };
+    ),
+    {
+      onSuccess() {
+        form.resetFields();
+      },
+    }
+  )
+
+  const onFinish = () => createDraft();
 
   return (
     <Form name="form_item_path" layout="vertical" onFinish={onFinish} form={form}>

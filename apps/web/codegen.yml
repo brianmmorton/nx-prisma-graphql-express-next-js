@@ -12,4 +12,3 @@ generates:
         plugins:
             - 'typescript'
             - 'typescript-operations'
-            - 'typescript-react-apollo'

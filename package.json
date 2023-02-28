@@ -17,7 +17,6 @@
     "seed": "ts-node ./apps/api/prisma/seed.ts"
   },
   "dependencies": {
-    "@apollo/client": "^3.7.9",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@fontsource/roboto": "^4.5.8",
@@ -25,6 +24,8 @@
     "@mui/material": "^5.11.10",
     "@nrwl/next": "15.7.2",
     "@prisma/client": "^4.10.1",
+    "@tanstack/react-query": "^4.24.10",
+    "@tanstack/react-query-devtools": "^4.24.12",
     "antd": "^5.2.2",
     "apollo-server": "^3.11.1",
     "apollo-server-express": "^3.11.1",
@@ -37,9 +38,11 @@
     "graphql-tag": "^2.12.6",
     "ioredis": "^5.3.1",
     "next": "13.1.1",
-    "react": "18.2.0",
+    "react": "^18.2.0",
     "react-dom": "18.2.0",
+    "react-query-subscription": "2.0.0-beta.1",
     "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.8.0",
     "tslib": "^2.3.0",
     "type-graphql": "^1.1.1"
   },

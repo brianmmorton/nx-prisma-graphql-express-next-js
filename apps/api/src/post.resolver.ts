@@ -17,7 +17,6 @@ import {
 import { Post } from './post.types';
 import { User } from './user.types';
 import { Context } from './context';
-import { pubsub } from './pubsub';
 
 @InputType()
 export class PostCreateInput {
