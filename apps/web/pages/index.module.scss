@@ -1,2 +1,12 @@
 .page {
+  display: flex;
+}
+
+.createPost {
+  padding: 20px;
+}
+
+.posts {
+  padding: 20px;
+  flex: 1;
 }

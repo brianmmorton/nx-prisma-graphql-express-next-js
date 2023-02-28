@@ -1,12 +1,12 @@
 import { PrismaClient } from '@prisma/client'
-import { PubSub } from 'graphql-subscriptions'
+import { RedisPubSub } from 'graphql-redis-subscriptions';
 import { pubsub } from './pubsub'
 
 const prisma = new PrismaClient()
 
 export interface Context {
   prisma: PrismaClient
-  pubsub: PubSub
+  pubsub: RedisPubSub
 }
 
 export const context: Context = {
