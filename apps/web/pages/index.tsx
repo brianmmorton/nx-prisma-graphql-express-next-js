@@ -2,6 +2,7 @@ import styles from './index.module.scss';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { Feed } from '../components/Feed';
 import { CreatePost } from '../components/CreatePost';
+import { getFeed } from '../lib/loaders/getFeed';
 
 export function Index() {
   return (
@@ -12,12 +13,15 @@ export function Index() {
       <div className={styles.posts}>
         <Feed />
       </div>
-=    </div>
+    </div>
   );
 }
 
 export async function getStaticProps() {
   const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery(['feed'], getFeed)
+
   return {
     props: {
       dehydratedState: dehydrate(queryClient),

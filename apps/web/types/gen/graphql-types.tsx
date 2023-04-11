@@ -133,12 +133,12 @@ export type CreateDraftMutationVariables = Exact<{
 
 export type CreateDraftMutation = { __typename?: 'Mutation', createDraft: { __typename?: 'Post', id: string } };
 
-export type AllFeedQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type AllFeedQuery = { __typename?: 'Query', feed: Array<{ __typename?: 'Post', content?: string | null, createdAt: any, id: string, published?: boolean | null, title: string, author?: { __typename?: 'User', id: string, email: string } | null }> };
-
 export type FeedSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
 export type FeedSubscription = { __typename?: 'Subscription', onFeedUpdated: { __typename?: 'Post', content?: string | null, createdAt: any, id: string, published?: boolean | null, title: string, author?: { __typename?: 'User', id: string, email: string } | null } };
+
+export type AllFeedQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AllFeedQuery = { __typename?: 'Query', feed: Array<{ __typename?: 'Post', content?: string | null, createdAt: any, id: string, published?: boolean | null, title: string, author?: { __typename?: 'User', id: string, email: string } | null }> };
