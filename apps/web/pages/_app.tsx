@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { useState } from 'react';
 import './styles.css';
 import 'antd/dist/reset.css';
+import { Navigation } from '../components/Navigation';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { DehydratedState, Hydrate, QueryClientProvider, QueryClient } from '@tanstack/react-query';
 
@@ -20,6 +21,7 @@ function CustomApp({ Component, pageProps }: AppProps & ReactQueryProps) {
       <Head>
         <title>Welcome to web!</title>
       </Head>
+      <Navigation />
       <main className="app">
         <QueryClientProvider client={queryClient}>
           <Hydrate state={pageProps.dehydratedState}>
