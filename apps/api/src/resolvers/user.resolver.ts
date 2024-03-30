@@ -7,13 +7,12 @@ import {
   Ctx,
   FieldResolver,
   Root,
-  Int,
   InputType,
   Field,
 } from 'type-graphql';
 import { Post } from './post.types';
 import { User } from './user.types';
-import { Context } from './context';
+import { Context } from '../context';
 import { PostCreateInput } from './post.resolver';
 
 @InputType()

@@ -4,6 +4,11 @@ import { useFeed } from './useFeed';
 
 export const Feed: React.FC = () => {
   const { data } = useFeed();
+
+  if (!data) {
+    return null;
+  }
+
   return (
     <div className={styles.posts}>
       <List

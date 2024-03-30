@@ -13,6 +13,10 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type FeedOrderByUpdatedAtInput = {
+  updatedAt: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createDraft: Post;
@@ -65,10 +69,6 @@ export type PostCreateInput = {
   title: Scalars['String'];
 };
 
-export type PostOrderByUpdatedAtInput = {
-  updatedAt: SortOrder;
-};
-
 export type Query = {
   __typename?: 'Query';
   allUsers: Array<User>;
@@ -84,7 +84,7 @@ export type QueryDraftsByUserArgs = {
 
 
 export type QueryFeedArgs = {
-  orderBy?: InputMaybe<PostOrderByUpdatedAtInput>;
+  orderBy?: InputMaybe<FeedOrderByUpdatedAtInput>;
   searchString?: InputMaybe<Scalars['String']>;
   skip?: InputMaybe<Scalars['Int']>;
   take?: InputMaybe<Scalars['Int']>;
@@ -94,11 +94,6 @@ export type QueryFeedArgs = {
 export type QueryPostByIdArgs = {
   id: Scalars['Float'];
 };
-
-export enum SortOrder {
-  Asc = 'asc',
-  Desc = 'desc'
-}
 
 export type Subscription = {
   __typename?: 'Subscription';

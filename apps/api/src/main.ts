@@ -1,7 +1,8 @@
 import 'reflect-metadata';
 import { registerEnumType, buildSchema } from 'type-graphql';
-import { PostCreateInput, PostResolver, SortOrder } from './post.resolver';
-import { UserResolver } from './user.resolver';
+import { PostCreateInput, PostResolver, SortOrder } from './resolvers/post.resolver';
+import { UserResolver } from './resolvers/user.resolver';
+import { FeedResolver } from './resolvers/feed.resolver';
 import { DateTimeResolver } from 'graphql-scalars';
 import { context } from './context';
 import { GraphQLScalarType } from 'graphql';
@@ -23,7 +24,7 @@ const createApp = async () => {
   })
 
   const schema = await buildSchema({
-    resolvers: [PostResolver, UserResolver, PostCreateInput],
+    resolvers: [PostResolver, UserResolver, PostCreateInput, FeedResolver],
     scalarsMap: [{ type: GraphQLScalarType, scalar: DateTimeResolver }],
     validate: { forbidUnknownValues: false }
   })

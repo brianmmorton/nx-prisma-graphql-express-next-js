@@ -6,6 +6,21 @@
 
 ## Development server
 
+### Install Postgres
+1. `brew install postgres`
+2. `brew services start postgres`
+3. `psql postgres`
+4. `CREATE DATABASE boiler;`
+
+### Install Redis
+1. `brew install redis`
+2. `brew services start redis`
+
+### Setup
+1. `npm i`
+2. `npm run api:prisma:migrate`
+3. `npm run api:prisma:generate`
+
 Run `nx serve boilerplate` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
 
 ## Understand this workspace

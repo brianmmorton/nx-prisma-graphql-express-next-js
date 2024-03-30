@@ -10,9 +10,7 @@ export function Index() {
       <div className={styles.createPost}>
         <CreatePost />
       </div>
-      <div className={styles.posts}>
-        <Feed />
-      </div>
+      <Feed />
     </div>
   );
 }
@@ -20,7 +18,7 @@ export function Index() {
 export async function getStaticProps() {
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery(['feed'], getFeed)
+  queryClient.prefetchQuery(['feed'], getFeed)
 
   return {
     props: {
